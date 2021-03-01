@@ -4,20 +4,25 @@ from flask import Flask, render_template, request
 main_options = ['Stock Time Series', 'Fundamental Data']
 stock_options = ['Intraday', 'Daily', 'Weekly', 'Monthly']
 fundamental_options = ['Company Overview', 'Balance Sheet Annual', 'Cash Flow Annual', 'Income Statement Annual']
+stock_list = ['AAPL', 'GOOG', 'TSLA']
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', pages=main_options)
+    return render_template('index.html', pages=main_options, stock_list=stock_list)
 
 
-@app.route('/submit', methods=['POST'])
+@app.route('/submit', methods=['POST', 'GET'])
 def submit():
-    if main_options == 'Stock Time Series':
-        return render_template("stock.html", ts_options=stock_options)
-    elif main_options == 'Fundamental Data':
+    opt = request.form['query']
+    stock = request.form['stock']
+
+    if opt == 'Stock Time Series':
+        data = Queries.api.get_stock_graph(stock)
+        return render_template("stock.html", data=data)
+    elif opt == 'Fundamental Data':
         return render_template("fund.html", fd_options=fundamental_options)
     else:
         return render_template('index.html', message='Please enter required fields!', pages=main_options)

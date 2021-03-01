@@ -13,7 +13,10 @@
       {% if message %}
       <p class="message">{{ message | safe }}</p>
       {% endif %}
+
+
         <div class="form-group">
+          <form action="/submit" method="POST">
           <h3>Query</h3>
           <select name="query">
             <option value="">Select:</option>
@@ -21,30 +24,17 @@
               <option>{{ page }}</option>
               {% endfor %}
           </select>
-        </div>
-        {% if Query == "Stock Time Series"%}
-          <div class="form-group">
-            <h3>Stock Options</h3>
-            <select name="st_options">
-              <option value="">Select:</option>
-                              {% for options in st_options %}
-                <option>{{ options }}</option>
-                {% endfor %}
-            </select>
-          </div>
-        {% elif Query == "Fundamental Data"%}
-              <div class="form-group">
-                <h3>Fundamental Options</h3>
-                <select name="fd_options">
-                  <option value="">Select:</option>
-                                  {% for options in fd_options %}
-                    <option>{{ options }}</option>
-                    {% endfor %}
-                </select>
-              </div>
 
-          {% endif %}
-              <form action="/submit" method="POST">
+            <h3>Stock</h3>
+          <select name="stock">
+            <option value="">Select:</option>
+              {% for stock in stock_list %}
+              <option>{{ stock }}</option>
+              {% endfor %}
+          </select>
+        </div>
+
+
                   <input type="submit" value="Submit" class="btn" />
               </form>
 
